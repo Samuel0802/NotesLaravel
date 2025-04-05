@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
+use function Laravel\Prompts\password;
 
 class AuthController extends Controller
 {
@@ -30,22 +33,40 @@ class AuthController extends Controller
        $request->validate($regras, $feedback);
 
 
-         $username = $request->input('text_username');
-         $password = $request->input('text_password');
+         $email = $request->input('email');
+         $senha = $request->input('senha');
 
-         //teste database connection
-         try{
-            DB::connection()->getPdo();
-            echo 'Connection success';
+        //check if Email existe
+        $user = User::where('email', $email)
+                ->where('deleted_at', NULL)
+                ->first();
 
-         }
-         catch(\PDOException $e){
-            echo 'Connection failed:' . $e->getMessage();
+        if(!$user){
+            //back: Volta atrás, withInput: dados do input form, with: mensagem de feedback
+            return redirect()->back()->withInput()->with('loginError', 'Email Ou Senha incorreto.');
+        }
 
-         }
+        //check if Senha existe
+        if(!password_verify($senha, $user->senha)){
+            return redirect()
+            ->back()
+            ->withInput()
+            ->with('loginError', 'Email Ou Senha incorreto.');
+        }
 
-         echo 'Fim';
+        //horario do login
+        $user->last_login = date('Y-m-d H:i:s');
+        $user->save();
 
+        //login user
+        session([
+            'users' => [
+              'id' => $user->id,
+              'email' => $user->email,
+            ]
+            ]);
+
+            echo 'LOGIN COM SUCESSO!';
 
 
     }
