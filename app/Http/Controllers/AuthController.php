@@ -10,68 +10,75 @@ use function Laravel\Prompts\password;
 
 class AuthController extends Controller
 {
-    public function login(){
-     return view('login');
+    public function login()
+    {
+        return view('login');
     }
 
-    public function loginSubmit(Request $request){
+    public function loginSubmit(Request $request)
+    {
 
         //Form validation
-       $regras = [
-           'email' => 'required|email',
-           'senha' => 'required|min:6|max:30',
+        $regras = [
+            'email' => 'required|email',
+            'senha' => 'required|min:6|max:30',
 
-       ];
+        ];
 
-       $feedback = [
-          'email.email' => 'Por favor, Informe um E-mail Valido.',
-          'senha.min' => 'O campo senha deve ter no mínimo :min caracteres.',
-          'senha.max' => 'O campo senha deve ter no máximo :max caracteres.',
-          'required' => 'O campo :attribute é obrigatório.',
-       ];
+        $feedback = [
+            'email.email' => 'Por favor, Informe um E-mail Valido.',
+            'senha.min' => 'O campo senha deve ter no mínimo :min caracteres.',
+            'senha.max' => 'O campo senha deve ter no máximo :max caracteres.',
+            'required' => 'O campo :attribute é obrigatório.',
+        ];
 
-       $request->validate($regras, $feedback);
+        $request->validate($regras, $feedback);
 
+        //Recupera os dados enviados
+        $email = $request->input('email');
+        $senha = $request->input('senha');
 
-         $email = $request->input('email');
-         $senha = $request->input('senha');
-
-        //check if Email existe
+        //Busca o usuário no banco
         $user = User::where('email', $email)
-                ->where('deleted_at', NULL)
-                ->first();
+            ->where('deleted_at', NULL)
+            ->first();
 
-        if(!$user){
+        //Verifica se encontrou e se a senha está correta
+        if (!$user) {
             //back: Volta atrás, withInput: dados do input form, with: mensagem de feedback
             return redirect()->back()->withInput()->with('loginError', 'Email Ou Senha incorreto.');
         }
 
-        //check if Senha existe
-        if(!password_verify($senha, $user->senha)){
+        //Verifica se encontrou e se a senha está correta
+        if (!password_verify($senha, $user->senha)) {
             return redirect()
-            ->back()
-            ->withInput()
-            ->with('loginError', 'Email Ou Senha incorreto.');
+                ->back()
+                ->withInput()
+                ->with('loginError', 'Email Ou Senha incorreto.');
         }
 
-        //horario do login
+       // Registra a data/hora do último login
         $user->last_login = date('Y-m-d H:i:s');
         $user->save();
 
-        //login user
+        //Armazena o usuário logado na sessão
         session([
-            'users' => [
-              'id' => $user->id,
-              'email' => $user->email,
+            'user' => [
+                'id' => $user->id,
+                'email' => $user->email,
             ]
-            ]);
+        ]);
 
-            echo 'LOGIN COM SUCESSO!';
-
-
+        //redirect to home
+        return redirect()->to('/');
     }
 
-    public function logout(){
+    public function logout()
+    {
 
+        //Remover o user da sessão
+        session()->forget('user');
+
+        return redirect()->to('/login');
     }
 }
