@@ -5,7 +5,7 @@
                 <div class="col">
                     <h4 class="text-info">{{ $item['title']}}</h4>
                     <small class="text-secondary"><span class="opacity-75 me-2">Created
-                            at:</span><strong>{{ $item['created_at'] }}</strong></small>
+                            at:</span><strong>{{ date('d-m-Y H:i:s', strtotime($item['created_at'])) }}</strong></small>
                 </div>
                 <div class="col text-end">
                     <a href="#" class="btn btn-outline-secondary btn-sm mx-1"><i
