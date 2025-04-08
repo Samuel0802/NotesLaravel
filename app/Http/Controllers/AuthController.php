@@ -43,7 +43,7 @@ class AuthController extends Controller
             ->where('deleted_at', NULL)
             ->first();
 
-        //Verifica se encontrou e se a senha está correta
+        //Verifica se encontrou e se a email está correto
         if (!$user) {
             //back: Volta atrás, withInput: dados do input form, with: mensagem de feedback
             return redirect()->back()->withInput()->with('loginError', 'Email Ou Senha incorreto.');
