@@ -20,7 +20,7 @@
                 </div>
 
                 @else
-                {{-- Se notas for mais que 0 carregar essa view  --}}
+                {{-- Se notas for maior que 0 carregar essa view  --}}
 
                 <!-- notes are available -->
                 <div class="d-flex justify-content-end mb-3">

@@ -13,13 +13,13 @@ Para tanto, foi utilizado o padrão de arquitetura de software MVC, que consiste
 ```sh
 Seeder
 
- ORM
+ORM
 
 Blade
 
-Form Request
+Validação de formulário
 
-Controller Model E View
+Capturando e Validando IDs Encriptados
 
 SqlServe
 

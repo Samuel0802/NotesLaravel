@@ -8,9 +8,9 @@
                             at:</span><strong>{{ date('d-m-Y H:i:s', strtotime($item['created_at'])) }}</strong></small>
                 </div>
                 <div class="col text-end">
-                    <a href="#" class="btn btn-outline-secondary btn-sm mx-1"><i
+                    <a href="{{ route('edit', ['id' => Crypt::encrypt($item['id'])]) }}" class="btn btn-outline-secondary btn-sm mx-1"><i
                             class="fa-regular fa-pen-to-square"></i></a>
-                    <a href="#" class="btn btn-outline-danger btn-sm mx-1"><i
+                    <a href="{{ route('delete', ['id' => Crypt::encrypt($item['id'])]) }}" class="btn btn-outline-danger btn-sm mx-1"><i
                             class="fa-regular fa-trash-can"></i></a>
                 </div>
             </div>

@@ -8,7 +8,7 @@ class User extends Model
 {
 
     public function notes(){
-        //muitas notas por um usuario
+        // um para muitos
        return $this->hasMany(Note::class);
     }
 

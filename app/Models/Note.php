@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Note extends Model
 {
     public function user(){
-        //unico user por muitas notas
+
+        //lado de muitos para um do relacionamento
         return $this->belongsTo(User::class);
     }
 }
