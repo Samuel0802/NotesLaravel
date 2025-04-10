@@ -30,10 +30,32 @@
                 </div>
 
                  @foreach($notes as $item )
+
                  @include('note')
                 @endforeach
 
                 @endif
+
+                  {{-- Paginação das notas --}}
+                <nav aria-label="Page navigation example ">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item ">
+                        <a class="page-link" href="{{ $notes->previousPageUrl() }}">Voltar</a>
+                      </li>
+                      {{-- lastPage(): Retorna a ultima pagina entre relação de pagina com quantidade de registro exibido --}}
+                      @for($i = 1; $i <= $notes->lastPage(); $i++)
+                      {{-- currentePage(): indica qual apgina que está sendo exibida no momento --}}
+                      <li class="page-item {{ $notes->currentPage() == $i ? 'active' : '' }}">
+                        {{-- url: vai montar cada uma das paginas que forem construida --}}
+                        <a class="page-link" href="{{ $notes->url($i) }}">{{ $i }}</a>
+                    </li>
+
+                       @endfor
+                      <li class="page-item">
+                        <a class="page-link" href="{{ $notes->nextPageUrl() }}">Avançar</a>
+                      </li>
+                    </ul>
+                  </nav>
 
             </div>
         </div>

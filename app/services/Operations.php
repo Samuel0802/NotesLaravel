@@ -8,7 +8,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 
 Class Operations
 {
-  //Criação de metodos
+  //Criação de metodos descriptando o id da nota
     public static function decryptId($value){
 
         try {
