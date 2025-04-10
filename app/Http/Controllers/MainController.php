@@ -18,7 +18,7 @@ class MainController extends Controller
 
         //buscando notas do user logado
         //Chama o relacionamento notes() definido no modelo User
-        $notes = User::find($id)->notes()->paginate(2);
+        $notes = User::find($id)->notes()->paginate(5);
 
         //show home view
        return view('home', ['notes' => $notes]);
@@ -132,7 +132,29 @@ class MainController extends Controller
 
         $id = Operations::decryptId($id);
 
-        echo "$id";
+       //Carregar nota
+       $note = Note::find($id);
+
+       return view('delete_note', ['note' => $note]);
+
+    }
+
+    public function deleteNoteConfirm($id){
+
+     //check se $id no encrypted existe
+     $id = Operations::decryptId($id);
+
+     //carregar note
+     $note = Note::find($id);
+
+     //1. Hard delete: remover o registro fisicamente
+     //$note->delete();
+
+     //2. Soft delete
+
+
+     //redirect home
+    return redirect()->route('home');
 
     }
 
