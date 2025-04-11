@@ -18,7 +18,7 @@ class MainController extends Controller
 
         //buscando notas do user logado
         //Chama o relacionamento notes() definido no modelo User
-        $notes = User::find($id)->notes()->paginate(5);
+        $notes = User::find($id)->notes()->whereNull('deleted_at')->paginate(5);
 
         //show home view
        return view('home', ['notes' => $notes]);
@@ -148,9 +148,12 @@ class MainController extends Controller
      $note = Note::find($id);
 
      //1. Hard delete: remover o registro fisicamente
-     //$note->delete();
+   //  $note->delete();
 
      //2. Soft delete
+     $note->deleted_at = date('Y-m-d H:i:s');
+     $note->save();
+
 
 
      //redirect home
