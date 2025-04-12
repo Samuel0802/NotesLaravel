@@ -17,6 +17,10 @@ ORM
 
 Blade
 
+Soft Delete
+
+Hard Delete
+
 Validação de formulário
 
 Capturando e Validando IDs Encriptados
