@@ -8,6 +8,8 @@
 
       @include('top_bar')
 
+
+
             <!-- label and cancel -->
             <div class="row">
                 <div class="col">

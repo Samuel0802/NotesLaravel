@@ -5,7 +5,7 @@
        <a href="{{ route('home') }}"><img src="{{ asset('assets/images/logo.png') }}" alt="Notes logo"></a>
     </div>
     <div class="col text-center">
-        A simple <span class="text-warning">Laravel</span> project!
+        Projeto  <span class="text-warning">Bloco de Notas</span> em laravel!
     </div>
     <div class="col">
         <div class="d-flex justify-content-end align-items-center">

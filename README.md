@@ -9,8 +9,40 @@ O objetivo do projeto consiste em criar sistema de bloco de notas, que irá poss
 Para tanto, foi utilizado o padrão de arquitetura de software MVC, que consiste na separação da aplicação em três camadas distintas, a Model, a View e a Controller.
 ```
 
+### Passo a Passo para rodar o projeto
+
+```sh
+
+php artisan migrate
+
+php artisan DB:seed UsersTableSeeder
+
+php artisan serve
+
+```
+
+
+### UsersTableSeeder
+
+
+```sh
+
+email: user1@gmail.com
+senha: user12345
+
+email: user2@gmail.com
+senha: user12345
+
+email: user3@gmail.com
+senha: user12345
+
+```
+
 ### Tecnologias
 ```sh
+
+MVC
+
 Seeder
 
 ORM
@@ -29,7 +61,7 @@ SqlServe
 
 PHP 8
 
-nginx
+Middleware
 
 Boostrap (Front-end)
 
@@ -40,8 +72,6 @@ Refatoração de código
 Github
 
 Git
-
-Requisições HTPP put,post,get,delete
 
 Criando Query para paginação
 

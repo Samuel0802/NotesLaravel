@@ -8,10 +8,12 @@
 
       @include('top_bar')
 
+
+
             <!-- label and cancel -->
             <div class="row">
                 <div class="col">
-                    <p class="display-6 mb-0">NEW NOTE</p>
+                    <p class="display-6 mb-0">NOVA NOTA</p>
                 </div>
                 <div class="col text-end">
                     <a href="{{ route('home') }}" class="btn btn-outline-danger">
@@ -19,6 +21,8 @@
                     </a>
                 </div>
             </div>
+
+
 
             <!-- form -->
             <form action="{{ route('newSubmit') }}" method="post">
@@ -48,10 +52,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <div class="row mt-3 mb-3">
                     <div class="col text-end">
-                        <a href="{{ route('home') }}" class="btn btn-primary px-5"><i class="fa-solid fa-ban me-2"></i>Cancel</a>
-                        <button type="submit" class="btn btn-secondary px-5"><i class="fa-regular fa-circle-check me-2"></i>Save</button>
+                        <a href="{{ route('home') }}" class="btn btn-primary px-5"><i class="fa-solid fa-ban me-2"></i>Cancelar</a>
+                        <button type="submit" class="btn btn-secondary px-5"><i class="fa-regular fa-circle-check me-2"></i>Salvar</button>
                     </div>
                 </div>
             </form>

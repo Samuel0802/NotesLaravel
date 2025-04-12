@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 class MainController extends Controller
 {
     //Tela home
-    public function index(){
+    public function index()
+    {
 
         //load user's notes
         $id = session('user.id');
@@ -21,151 +22,172 @@ class MainController extends Controller
         $notes = User::find($id)->notes()->whereNull('deleted_at')->paginate(5);
 
         //show home view
-       return view('home', ['notes' => $notes]);
+        return view('home', ['notes' => $notes]);
     }
 
     //Tela view get para nova nota
-    public function newNote(){
+    public function newNote()
+    {
 
         //show new note view
         return view('new_note');
-
     }
 
     //Tela post para nova nota
-    public function newNoteSubmit(Request $request){
+    public function newNoteSubmit(Request $request)
+    {
 
-     //Validação dos dados do formulário
-     $regras = [
-       'title' => 'required|min:3|max:200',
-       'text' => 'required|min:3|max:3000',
-     ];
+        //Validação dos dados do formulário
+        $regras = [
+            'title' => 'required|min:3|max:200',
+            'text' => 'required|min:3|max:3000',
+        ];
 
-     $feedback = [
+        $feedback = [
 
-     'title.min' => 'O campo deve ter no minimo :min caracteres.',
-     'title.max' => 'O campo deve ter no máxino :max caracteres',
-     'title.required' => 'O campo Titulo é Obrigátorio',
-     'text.min' => 'O campo deve ter no minimo :min caracteres',
-     'text.max' => 'O campo deve ter no máximo :max caracteres',
-     'text.required' => 'O campo Nota é Obrigatório',
+            'title.min' => 'O campo deve ter no minimo :min caracteres.',
+            'title.max' => 'O campo deve ter no máxino :max caracteres',
+            'title.required' => 'O campo Titulo é Obrigátorio',
+            'text.min' => 'O campo deve ter no minimo :min caracteres',
+            'text.max' => 'O campo deve ter no máximo :max caracteres',
+            'text.required' => 'O campo Nota é Obrigatório',
 
-     ];
+        ];
 
-     $request->validate($regras, $feedback);
-
-
-     //Buscar id do user
-     $id = session('user.id');
-
-     //Criar nova nota
-     $nota = new Note();
-     $nota->user_id = $id;
-     $nota->title = $request->input('title');
-     $nota->text = $request->input('text');
-     $nota->save();
-
-     //Redirecionar para a home
-    return redirect()->route('home');
+        $request->validate($regras, $feedback);
 
 
+        //Buscar id do user
+        $id = session('user.id');
+
+        try {
+            //Criar nova nota
+            $nota = new Note();
+            $nota->user_id = $id;
+            $nota->title = $request->input('title');
+            $nota->text = $request->input('text');
+            $nota->save();
+
+            //Redirecionar para a home
+            return redirect()->route('home')->with('success', 'Uma nova nota criada com sucesso.');
+        } catch (\Exception $e) {
+            return redirect()->route('home')->with('erro', 'Erro ao cadastrar a nota. Tente novamente.');
+        }
     }
 
     //Tela get para editar nota
-    public function editNote($id){
+    public function editNote($id)
+    {
 
-       $id = Operations::decryptId($id);
+        //função para decrypt do id da nota
+        $id = Operations::decryptId($id);
 
-       //Carregar nota
-       $note = Note::find($id);
+        if ($id === null) {
+            return redirect()->route('home');
+        }
 
-       return view('edit_note', ['note' => $note]);
+        //Carregar nota
+        $note = Note::find($id);
 
+        return view('edit_note', ['note' => $note]);
     }
 
     //Tela post para editar nota
-    public function editNoteSubmit(Request $request){
+    public function editNoteSubmit(Request $request)
+    {
 
-         //Validação dos dados do formulário
-         $regras = [
+        //Validação dos dados do formulário
+        $regras = [
             'title' => 'required|min:3|max:200',
             'text' => 'required|min:3|max:3000',
-          ];
+        ];
 
-          $feedback = [
+        $feedback = [
 
-          'title.min' => 'O campo deve ter no minimo :min caracteres.',
-          'title.max' => 'O campo deve ter no máxino :max caracteres',
-          'title.required' => 'O campo Titulo é Obrigátorio',
-          'text.min' => 'O campo deve ter no minimo :min caracteres',
-          'text.max' => 'O campo deve ter no máximo :max caracteres',
-          'text.required' => 'O campo Nota é Obrigatório',
+            'title.min' => 'O campo deve ter no minimo :min caracteres.',
+            'title.max' => 'O campo deve ter no máxino :max caracteres',
+            'title.required' => 'O campo Titulo é Obrigátorio',
+            'text.min' => 'O campo deve ter no minimo :min caracteres',
+            'text.max' => 'O campo deve ter no máximo :max caracteres',
+            'text.required' => 'O campo Nota é Obrigatório',
 
-          ];
+        ];
 
-          $request->validate($regras, $feedback);
+        $request->validate($regras, $feedback);
 
         //check se note_id existe
-        if($request->note_id == null){
+        if ($request->note_id == null) {
             // die('erro');
             return redirect()->route('home');
         }
 
-         //decrypt note_id
-         $id = Operations::decryptId($request->note_id);
+        //decrypt note_id
+        $id = Operations::decryptId($request->note_id);
 
-         //Carregar nota
-         $note = Note::find($id);
+        if ($id === null) {
+            return redirect()->route('home');
+        }
 
-         //Update nota
-        $note->title = $request->input('title');
-        $note->text = $request->input('text');
-        $note->save();
+        //Carregar nota
+        $note = Note::find($id);
 
-         //Redirect Home
-         return redirect()->route('home');
+        try {
+            //Update nota
+            $note->title = $request->input('title');
+            $note->text = $request->input('text');
+            $note->save();
 
+             //Redirect Home
+        return redirect()->route('home')->with('success', 'Nota editada com sucesso.');
+
+        } catch (\Exception $e) {
+        return redirect()->route('home')->with('erro', 'Erro ao editar a nota. Tente novamente.');
+        }
 
     }
 
-    public function deleteNote($id){
+    public function deleteNote($id)
+    {
 
         $id = Operations::decryptId($id);
 
-       //Carregar nota
-       $note = Note::find($id);
+        if ($id === null) {
+            return redirect()->route('home');
+        }
 
-       return view('delete_note', ['note' => $note]);
+        //Carregar nota
+        $note = Note::find($id);
 
+        return view('delete_note', ['note' => $note]);
     }
 
-    public function deleteNoteConfirm($id){
+    public function deleteNoteConfirm($id)
+    {
 
-     //check se $id no encrypted existe
-     $id = Operations::decryptId($id);
+        //check se $id no encrypted existe
+        $id = Operations::decryptId($id);
 
-     //carregar note
-     $note = Note::find($id);
+        if ($id === null) {
+            return redirect()->route('home');
+        }
 
-     //1. Hard delete: remover o registro fisicamente
-   //  $note->delete();
+        //carregar note
+        $note = Note::find($id);
 
-     //2. Soft delete
-    //  $note->deleted_at = date('Y-m-d H:i:s');
-    //  $note->save();
+        //1. Hard delete: remover o registro fisicamente
+        //  $note->delete();
 
-    //3. Soft delete usando model
-    $note->delete();
+        //2. Soft delete
+        //  $note->deleted_at = date('Y-m-d H:i:s');
+        //  $note->save();
 
-     //4. Hard Delete usando model
-     //$note->forceDelete();
+        //3. Soft delete usando model
+        $note->delete();
 
-     //redirect home
-    return redirect()->route('home');
+        //4. Hard Delete usando model
+        //$note->forceDelete();
 
+        //redirect home
+        return redirect()->route('home');
     }
-
-
-
-
 }
