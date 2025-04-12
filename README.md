@@ -85,4 +85,27 @@ Validação de Formularios
 
 Paginação: Filtrar dados
  ```
+### TELA DE LOGIN
+
+![image](https://github.com/user-attachments/assets/5aca2b37-f50e-4d3c-850d-a4e73ea8a87f)
+
+### TELA HOME
+
+![image](https://github.com/user-attachments/assets/66b037bd-1547-4bda-9e45-11f8c756a64f)
+
+![image](https://github.com/user-attachments/assets/a3dc91bc-d034-4eeb-87db-bdd28569899a)
+
+### TELA DE EDITAR NOTA
+
+![image](https://github.com/user-attachments/assets/fe6f9500-206b-438f-be8c-bd437f847353)
+
+### TELA DE EXCLUIR NOTA
+
+![image](https://github.com/user-attachments/assets/4f515e01-e895-4d0d-be8a-198039a7b61f)
+
+
+
+
+
+
 
